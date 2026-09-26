@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReqVision AI</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="background"></div>
+
+<nav>
+    <div class="logo">ReqVision AI</div>
+
+    <ul>
+        <li><a href="#">Features</a></li>
+        <li><a href="#">Dashboard</a></li>
+        <li><a href="#">About</a></li>
+    </ul>
+</nav>
+
+<section class="hero">
+
+    <h1>
+        AI-Powered Requirement
+        <span>Conflict Detection</span>
+    </h1>
+
+    <p>
+        Analyze requirement documents, detect ambiguities,
+        contradictions, missing dependencies and risks before development begins.
+    </p>
+
+    <div class="upload-box">
+
+        <input type="file" id="fileInput">
+
+        <button onclick="analyzeDoc()">
+            Analyze Document
+        </button>
+
+    </div>
+
+</section>
+
+<section class="dashboard">
+
+   <section class="dashboard">
+
+    <div class="card glass">
+        <h2 id="ambiguousCount">0</h2>
+        <p>Ambiguous Requirements</p>
+    </div>
+
+    <div class="card glass">
+        <h2 id="conflictCount">0</h2>
+        <p>Conflicts Found</p>
+    </div>
+
+    <div class="card glass">
+        <h2 id="dependencyCount">0</h2>
+        <p>Missing Dependencies</p>
+    </div>
+
+    <div class="card glass">
+        <h2 id="qualityScore">0%</h2>
+        <p>Quality Score</p>
+    </div>
+
+</section>
+
+<div class="results glass">
+
+    <h2>Analysis Results</h2>
+
+    <div id="output">
+        Upload a document to begin analysis...
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
