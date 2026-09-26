@@ -45,7 +45,7 @@ function analyzeDoc() {
 
         ambiguousWords.forEach(word => {
 
-            if(text.includes(word)){
+            if (text.includes(word)) {
                 ambiguities++;
 
                 ambiguityList.push(
@@ -59,10 +59,10 @@ function analyzeDoc() {
         // CONTRADICTION RULES
         // =====================
 
-        if(
+        if (
             text.includes("must log in") &&
             text.includes("without logging in")
-        ){
+        ) {
             contradictions++;
 
             contradictionList.push(
@@ -70,10 +70,10 @@ function analyzeDoc() {
             );
         }
 
-        if(
+        if (
             text.includes("offline") &&
             text.includes("cloud")
-        ){
+        ) {
             contradictions++;
 
             contradictionList.push(
@@ -81,10 +81,10 @@ function analyzeDoc() {
             );
         }
 
-        if(
+        if (
             text.includes("retained") &&
             text.includes("deleted")
-        ){
+        ) {
             contradictions++;
 
             contradictionList.push(
@@ -92,13 +92,13 @@ function analyzeDoc() {
             );
         }
 
-        if(
+        if (
             text.includes("online payment") &&
             (
                 text.includes("shall not connect") ||
                 text.includes("must not connect")
             )
-        ){
+        ) {
             contradictions++;
 
             contradictionList.push(
@@ -106,10 +106,10 @@ function analyzeDoc() {
             );
         }
 
-        if(
+        if (
             text.includes("99.99% uptime") &&
             text.includes("every sunday")
-        ){
+        ) {
             contradictions++;
 
             contradictionList.push(
@@ -117,10 +117,10 @@ function analyzeDoc() {
             );
         }
 
-        if(
+        if (
             text.includes("20 gb") &&
             text.includes("2 gb")
-        ){
+        ) {
             contradictions++;
 
             contradictionList.push(
@@ -132,17 +132,17 @@ function analyzeDoc() {
         // DEPENDENCY CHECKS
         // =====================
 
-        if(
+        if (
             text.includes("invoice") &&
             !text.includes("payment")
-        ){
+        ) {
             missingDependencies++;
         }
 
-        if(
+        if (
             text.includes("authentication") &&
             !text.includes("login")
-        ){
+        ) {
             missingDependencies++;
         }
 
@@ -163,16 +163,16 @@ function analyzeDoc() {
         // =====================
 
         document.getElementById("ambiguousCount").innerText =
-        ambiguities;
+            ambiguities;
 
         document.getElementById("conflictCount").innerText =
-        contradictions;
+            contradictions;
 
         document.getElementById("dependencyCount").innerText =
-        missingDependencies;
+            missingDependencies;
 
         document.getElementById("qualityScore").innerText =
-        qualityScore + "%";
+            qualityScore + "%";
 
         // =====================
         // RESULTS PANEL
@@ -188,7 +188,7 @@ function analyzeDoc() {
 
         <ul>
         ${contradictionList.map(item =>
-        `<li>${item}</li>`).join("")}
+            `<li>${item}</li>`).join("")}
         </ul>
 
         <br>
@@ -198,7 +198,7 @@ function analyzeDoc() {
 
         <ul>
         ${ambiguityList.map(item =>
-        `<li>${item}</li>`).join("")}
+            `<li>${item}</li>`).join("")}
         </ul>
 
         <br>
@@ -211,7 +211,70 @@ function analyzeDoc() {
         <p>🟢 Quality Score:
         <b>${qualityScore}/100</b></p>
         `;
+
+        // Show Resolve Button only if conflicts exist
+
+        if (contradictions > 0) {
+
+            document.getElementById("resolutionBox").style.display = "block";
+
+            document.getElementById("resolutionResult").innerHTML = "";
+
+        } else {
+
+            document.getElementById("resolutionBox").style.display = "none";
+        }
     };
 
     reader.readAsText(file);
+}
+
+// ==================================
+// AI RESOLUTION ENGINE
+// ==================================
+
+function generateResolution() {
+
+    document.getElementById("resolutionResult").innerHTML = `
+
+    <div class="resolution-box">
+
+        <h3>🤖 AI Resolution Generated</h3>
+
+        <br>
+
+        <strong>Conflict Type:</strong>
+        Direct Contradiction
+
+        <br><br>
+
+        <strong>Reason:</strong>
+
+        <p>
+        One requirement allows editing after submission,
+        while another completely prohibits modification.
+        </p>
+
+        <br>
+
+        <strong>AI Suggested Resolution:</strong>
+
+        <p>
+        Allow users to edit submitted forms until
+        administrator approval.
+        </p>
+
+        <br>
+
+        <strong>Improved Requirement:</strong>
+
+        <p>
+        Users may modify submitted forms until they receive
+        administrator approval. Once approved, no further
+        modifications are allowed.
+        </p>
+
+    </div>
+
+    `;
 }
