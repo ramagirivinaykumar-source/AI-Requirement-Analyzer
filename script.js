@@ -1,4 +1,16 @@
+// ==================================
+// GLOBAL VARIABLE
+// ==================================
+
+let detectedConflict = "";
+
+// ==================================
+// ANALYZE DOCUMENT
+// ==================================
+
 function analyzeDoc() {
+
+    detectedConflict = "";
 
     const fileInput = document.getElementById("fileInput");
     const output = document.getElementById("output");
@@ -46,13 +58,13 @@ function analyzeDoc() {
         ambiguousWords.forEach(word => {
 
             if (text.includes(word)) {
+
                 ambiguities++;
 
                 ambiguityList.push(
                     `"${word}" is ambiguous`
                 );
             }
-
         });
 
         // =====================
@@ -63,7 +75,10 @@ function analyzeDoc() {
             text.includes("must log in") &&
             text.includes("without logging in")
         ) {
+
             contradictions++;
+
+            detectedConflict = "login";
 
             contradictionList.push(
                 "Login required conflicts with access without login."
@@ -74,7 +89,10 @@ function analyzeDoc() {
             text.includes("offline") &&
             text.includes("cloud")
         ) {
+
             contradictions++;
+
+            detectedConflict = "offline";
 
             contradictionList.push(
                 "Offline operation conflicts with cloud synchronization."
@@ -85,7 +103,10 @@ function analyzeDoc() {
             text.includes("retained") &&
             text.includes("deleted")
         ) {
+
             contradictions++;
+
+            detectedConflict = "retention";
 
             contradictionList.push(
                 "Data retention conflicts with deletion policy."
@@ -99,7 +120,10 @@ function analyzeDoc() {
                 text.includes("must not connect")
             )
         ) {
+
             contradictions++;
+
+            detectedConflict = "payment";
 
             contradictionList.push(
                 "Online payment conflicts with payment-service restriction."
@@ -110,7 +134,10 @@ function analyzeDoc() {
             text.includes("99.99% uptime") &&
             text.includes("every sunday")
         ) {
+
             contradictions++;
+
+            detectedConflict = "uptime";
 
             contradictionList.push(
                 "High uptime conflicts with weekly downtime."
@@ -121,7 +148,10 @@ function analyzeDoc() {
             text.includes("20 gb") &&
             text.includes("2 gb")
         ) {
+
             contradictions++;
+
+            detectedConflict = "storage";
 
             contradictionList.push(
                 "Upload size exceeds available storage."
@@ -212,12 +242,13 @@ function analyzeDoc() {
         <b>${qualityScore}/100</b></p>
         `;
 
-        // Show Resolve Button only if conflicts exist
+        // =====================
+        // SHOW RESOLVE BUTTON
+        // =====================
 
         if (contradictions > 0) {
 
             document.getElementById("resolutionBox").style.display = "block";
-
             document.getElementById("resolutionResult").innerHTML = "";
 
         } else {
@@ -235,46 +266,149 @@ function analyzeDoc() {
 
 function generateResolution() {
 
-    document.getElementById("resolutionResult").innerHTML = `
+    let resolution = "";
 
-    <div class="resolution-box">
+    if (detectedConflict === "login") {
 
-        <h3>🤖 AI Resolution Generated</h3>
+        resolution = `
+        <div class="resolution-box">
 
-        <br>
+            <h3>🤖 AI Resolution Generated</h3>
 
-        <strong>Conflict Type:</strong>
-        Direct Contradiction
+            <p><b>Conflict Type:</b> Login Policy Conflict</p>
 
-        <br><br>
+            <p><b>Reason:</b>
+            One requirement requires authentication while
+            another allows access without authentication.
+            </p>
 
-        <strong>Reason:</strong>
+            <p><b>Suggested Resolution:</b>
+            Allow guest access only for public content and
+            require authentication for protected resources.
+            </p>
 
-        <p>
-        One requirement allows editing after submission,
-        while another completely prohibits modification.
-        </p>
+            <p><b>Improved Requirement:</b>
+            Users must authenticate before accessing
+            protected resources. Public content may be
+            viewed without login.
+            </p>
 
-        <br>
+        </div>
+        `;
+    }
 
-        <strong>AI Suggested Resolution:</strong>
+    else if (detectedConflict === "offline") {
 
-        <p>
-        Allow users to edit submitted forms until
-        administrator approval.
-        </p>
+        resolution = `
+        <div class="resolution-box">
 
-        <br>
+            <h3>🤖 AI Resolution Generated</h3>
 
-        <strong>Improved Requirement:</strong>
+            <p><b>Conflict Type:</b> Offline vs Cloud Conflict</p>
 
-        <p>
-        Users may modify submitted forms until they receive
-        administrator approval. Once approved, no further
-        modifications are allowed.
-        </p>
+            <p><b>Reason:</b>
+            The system is required to work offline while
+            also depending on cloud services.
+            </p>
 
-    </div>
+            <p><b>Suggested Resolution:</b>
+            Store data locally when offline and synchronize
+            with the cloud when connectivity is restored.
+            </p>
 
-    `;
+            <p><b>Improved Requirement:</b>
+            The system shall support offline operation
+            through local storage and synchronize data
+            automatically when internet access becomes available.
+            </p>
+
+        </div>
+        `;
+    }
+
+    else if (detectedConflict === "retention") {
+
+        resolution = `
+        <div class="resolution-box">
+
+            <h3>🤖 AI Resolution Generated</h3>
+
+            <p><b>Conflict Type:</b> Data Retention Conflict</p>
+
+            <p><b>Suggested Resolution:</b>
+            Define a retention period after which data
+            is permanently deleted.
+            </p>
+
+        </div>
+        `;
+    }
+
+    else if (detectedConflict === "payment") {
+
+        resolution = `
+        <div class="resolution-box">
+
+            <h3>🤖 AI Resolution Generated</h3>
+
+            <p><b>Conflict Type:</b> Payment Integration Conflict</p>
+
+            <p><b>Suggested Resolution:</b>
+            Allow secure connections only to approved
+            payment gateway providers.
+            </p>
+
+        </div>
+        `;
+    }
+
+    else if (detectedConflict === "uptime") {
+
+        resolution = `
+        <div class="resolution-box">
+
+            <h3>🤖 AI Resolution Generated</h3>
+
+            <p><b>Conflict Type:</b> Availability Conflict</p>
+
+            <p><b>Suggested Resolution:</b>
+            Schedule maintenance during low-traffic hours
+            and exclude planned maintenance from uptime calculations.
+            </p>
+
+        </div>
+        `;
+    }
+
+    else if (detectedConflict === "storage") {
+
+        resolution = `
+        <div class="resolution-box">
+
+            <h3>🤖 AI Resolution Generated</h3>
+
+            <p><b>Conflict Type:</b> Storage Capacity Conflict</p>
+
+            <p><b>Suggested Resolution:</b>
+            Increase storage limits or reduce maximum upload size.
+            </p>
+
+        </div>
+        `;
+    }
+
+    else {
+
+        resolution = `
+        <div class="resolution-box">
+
+            <h3>No AI Resolution Available</h3>
+
+            <p>No contradiction was detected.</p>
+
+        </div>
+        `;
+    }
+
+    document.getElementById("resolutionResult").innerHTML = resolution;
 }
